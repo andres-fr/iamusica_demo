@@ -15,7 +15,7 @@ See [this companion repository](https://github.com/andres-fr/iamusica_training) 
 * [Joan Lluís Travé Pla](https://joantrave.net/en)
 * [Andrés Fernández Rodríguez](https://aferro.dynu.net)
 
-This is [Free/Libre and Open Source Software](https://www.gnu.org/philosophy/floss-and-foss.en.html), we welcome any contributions to improve it!
+This is [Free/Libre and Open Source Software](https://www.gnu.org/philosophy/floss-and-foss.en.html), see the [LICENSE](LICENSE) for more details!
 
 
 # Software dependencies
