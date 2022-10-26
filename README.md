@@ -10,7 +10,7 @@ See [this companion repository](https://github.com/andres-fr/iamusica_training) 
 
 <img src="assets/iamusica_logo.png" alt="IAMúsica logo" width="43%"/> <img src="assets/ieb_logo.png" alt="IEB logo" width="53%"/>
 
-*IAMúsica was supported by the [Institut d'Estudis Baleàrics](http://www.iebalearics.org/ca/), and is composed by:*
+*IAMúsica was supported by a research grant from the [Institut d'Estudis Baleàrics](http://www.iebalearics.org/ca/) ([389062, INV-23/2021](http://www.iebalearics.org/media/files/2022/02/10/resolucio-definitiva-inv-boib-2021-cat.pdf)), and is composed by:*
 * [Eulàlia Febrer Coll](https://www.researchgate.net/profile/Eulalia-Febrer-Coll)
 * [Joan Lluís Travé Pla](https://joantrave.net/en)
 * [Andrés Fernández Rodríguez](https://aferro.dynu.net)
