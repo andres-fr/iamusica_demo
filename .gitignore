@@ -1,3 +1,7 @@
+# Repo-specific
+assets/MAPS_MUS-chpn-p14_ENSTDkAm.wav
+workspace/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
