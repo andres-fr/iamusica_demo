@@ -10,8 +10,8 @@ The present repository hosts a highly configurable and extendable desktop graphi
 
 For the detections, a pre-trained deep learning model is used (provided [here](iamusica_demo/assets/OnsetVelocity_2_2022_09_08_01_27_40.139step=95000_f1=0.9640.torch)). See [this companion repository](https://github.com/andres-fr/iamusica_training) for details about training and evaluating the model.
 
-> :warning: **Detector**:
-> Note that the model has been trained on modern piano recordings, and its performance may suffer for different instruments and in contaminated/noisy environments.
+> :warning:
+> Note that the detector has been trained on modern piano recordings, and its performance may suffer for different instruments and in contaminated/noisy environments.
 > To facilitate detection quality, the demo includes a series of tunable parameters (more details below).
 
 
@@ -78,11 +78,11 @@ python -m iamusica_demo
 
 The following detection settings provide good detection both loading fairly modern recordings as well as when run from a laptop, using the built-in 16kHz microphone, and at about 2m distance from the piano:
 
-|   **name**   |     **value**    |              **description**                                       |
+| **name**     | **value**        | **description**                                                    |
 |:------------:|:----------------:|:------------------------------------------------------------------:|
-|    `OVIF`    | `(100, 30, 100)` | onset+value inference frame sizes (left pad, detection, right pad) |
-|   `PTHRESH`  |       0.75       | probability threshold for onset detection                          |
-| `MEL_OFFSET` |        -12       |    audio intensity offset, in decibels                             |
+| `OVIF`       | `(100, 30, 100)` | onset+value inference frame sizes (left pad, detection, right pad) |
+| `PTHRESH`    | `0.75`           | probability threshold for onset detection                          |
+| `MEL_OFFSET` | `-12`            | audio intensity offset, in decibels                                |
 
 
 They can be run from the start as follows:
@@ -108,18 +108,18 @@ python -c "from iamusica_demo.__main__ import ConfDef; print(ConfDef.__doc__)"
 
 ![demo frontend description](assets/demo_frontend_description.png)
 
-| **number** | **name**                | **description**                                    |
-|:----------:|:-----------------------:|:--------------------------------------------------:|
-| 1          | Toolbar                 | Menus to manage sessions and get help              |
-| 2          | Logmel-Spectrogram area | Displays the processed audio (x=time, y=frequency) |
-| 3          | Piano roll area         | Displays the detections (aligned with spectrogram) |
-| 4          | View settings           | Change the spectrogram and pianoroll appearance    |
-| 5          | Detection parameters    | Adjust how the detection input/output is processed |
-| 6          | Audio player            | Plays the audio shown in the spectrogram           |
-| 7          | Mouse selection         | Click-and-drag on piano roll to select notes       |
+| **number** | **name**                | **description**                                                                 |
+|:----------:|:-----------------------:|:-------------------------------------------------------------------------------:|
+| 1          | Toolbar                 | Menus to manage sessions and get help                                           |
+| 2          | Logmel-Spectrogram area | Displays the processed audio (x=time, y=frequency)                              |
+| 3          | Piano roll area         | Displays the detections (aligned with spectrogram)                              |
+| 4          | View settings           | Change the spectrogram and pianoroll appearance                                 |
+| 5          | Detection parameters    | Adjust how the detection input/output is processed                              |
+| 6          | Audio player            | Plays the audio shown in the spectrogram                                        |
+| 7          | Mouse selection         | Click-and-drag on piano roll to select notes                                    |
 | 8          | Vertical grid           | Left double-click on piano roll to set piano grid, right double-click to remove |
-| 9          | Velocity histogram      | Velocity histogram for current note selection      |
-| 10         | Selection statistics    | Statistics for current note selection              |
+| 9          | Velocity histogram      | Velocity histogram for current note selection                                   |
+| 10         | Selection statistics    | Statistics for current note selection                                           |
 
 
 * See `Help->Keyboard shortcuts` for convenience hotkeys to control e.g. the audio player and view settings.
