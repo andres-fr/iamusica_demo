@@ -19,13 +19,13 @@ import numpy as np
 import qdarkstyle
 from PySide2 import QtWidgets, QtGui, QtCore
 # app constants
-from . import ASSETS_PATH, OV_MODEL_PATH, WAV_SAMPLERATE, NUM_PIANO_KEYS
+from . import ASSETS_PATH, OV_MODEL_PATH, OV_MODEL_CONV1X1_HEAD, \
+    OV_MODEL_LRELU_SLOPE, WAV_SAMPLERATE, NUM_PIANO_KEYS
 from . import MEL_FRAME_SIZE, MEL_FRAME_HOP, NUM_MELS, MEL_FMIN, MEL_FMAX, \
     MEL_WINDOW
 # app backend
 from .utils import make_timestamp
-from .building_blocks import TorchWavToLogmelDemo
-from .dl_models import get_ov_demo_model
+from .models import TorchWavToLogmelDemo, get_ov_demo_model
 from .session import SessionHDF5, DemoSession
 # app frontend
 from .gui.main_window import IAMusicaMainWindow
@@ -187,8 +187,10 @@ class IAMusicaApp(QtWidgets.QApplication):
                  # backend
                  wav_samplerate=16000,
                  mel_frame_size=2048,
-                 mel_frame_hop=384, num_mels=250, mel_fmin=50, mel_fmax=8000,
+                 mel_frame_hop=384, num_mels=229, mel_fmin=50, mel_fmax=8000,
                  mel_window=MEL_WINDOW, ov_model_path=OV_MODEL_PATH,
+                 ov_model_conv1x1_head=OV_MODEL_CONV1X1_HEAD,
+                 ov_model_lrelu_slope=OV_MODEL_LRELU_SLOPE,
                  num_piano_keys=NUM_PIANO_KEYS,
                  # demo
                  audio_recording_numhops=4, h5_chunk_numhops=60,
@@ -226,7 +228,8 @@ class IAMusicaApp(QtWidgets.QApplication):
             wav_samplerate, mel_frame_size, mel_frame_hop, num_mels,
             mel_fmin, mel_fmax, mel_window)
         self.ov_model = get_ov_demo_model(
-            ov_model_path, num_mels, num_piano_keys, self.TORCH_DEVICE)
+            ov_model_path, num_mels, num_piano_keys,
+            ov_model_conv1x1_head, ov_model_lrelu_slope, self.TORCH_DEVICE)
         #
         self.wav_samplerate = wav_samplerate
 
@@ -601,9 +604,11 @@ def run_iamusica_demo_app(initial_display_width=400,
                           dark_mode=True):
     """
     """
+
     app = IAMusicaApp("IAMUSICA DEMO", initial_display_width,
                       WAV_SAMPLERATE, MEL_FRAME_SIZE, MEL_FRAME_HOP, NUM_MELS,
                       MEL_FMIN, MEL_FMAX, MEL_WINDOW, OV_MODEL_PATH,
+                      OV_MODEL_CONV1X1_HEAD, OV_MODEL_LRELU_SLOPE,
                       NUM_PIANO_KEYS,
                       #
                       audio_recording_numhops,

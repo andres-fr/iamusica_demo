@@ -17,7 +17,7 @@ import pyaudio
 class AsynchAudioInputStream:
     """
     This class holds and manages a pyaudio stream to record audio and
-    perriodically call a callback function when audio packets arrive.
+    periodically call a callback function when audio packets arrive.
 
     Use the OS audio settings to select the active microphone.
     """
@@ -56,7 +56,7 @@ class AsynchAudioInputStream:
                     print("\n\nsupported:", devinfo)
                     break
                 except (ValueError, OSError) as e:
-                    # print("\n\n!!!!!!!!!!!", type(e), e)
+                    # print("\n\nAudio device issues!", type(e), e)
                     pass
         #
         self.update_callback = update_callback

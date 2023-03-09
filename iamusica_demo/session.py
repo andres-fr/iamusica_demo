@@ -204,22 +204,6 @@ class DemoSession:
         self.aais = AsynchAudioInputStream(
             samplerate=wav_samplerate, chunk_length=self.in_chunk_length,
             update_callback=self.wav_update_callback)
-        # # create HDF5 databases to store live computations
-        # h5w_chunk_len = logmel_fn.hopsize * h5w_chunk_numhops
-        # self.h5w = IncrementalHDF5(h5wav_path, height=1, dtype=self.NP_DTYPE,
-        #                            data_chunk_length=h5w_chunk_len,
-        #                            metadata_chunk_length=h5w_chunk_len,
-        #                            err_if_exists=True)
-        # self.h5m = IncrementalHDF5(h5mel_path, height=num_mels,
-        #                            dtype=self.NP_DTYPE,
-        #                            data_chunk_length=h5mel_chunk_numframes,
-        #                            metadata_chunk_length=h5mel_chunk_numframes,
-        #                            err_if_exists=True)
-        # self.h5o = IncrementalHDF5(h5onset_path, height=num_piano_keys,
-        #                            dtype=self.NP_DTYPE,
-        #                            data_chunk_length=h5mel_chunk_numframes,
-        #                            metadata_chunk_length=h5mel_chunk_numframes,
-        #                            err_if_exists=True)
 
     def get_inference_params(self):
         """
@@ -354,7 +338,8 @@ class DemoSession:
           the last r indexes. Also remove corresponding entries in dataframe.
         :returns: ``(trimmed_logmel, trimmed_roll, trimmed_df)``.
        """
-        print("\n\n PREDICTING WITH:", pthresh, (mel_offset, mel_vshift), (trim_out_l, trim_out_r), wav.shape)
+        print("\n\n PREDICTING WITH:", pthresh, (mel_offset, mel_vshift),
+              (trim_out_l, trim_out_r), wav.shape)
         logmel = logmel_fn(wav, mel_offset, mel_vshift)
         ov_roll, df = ov_model(logmel, pthresh)
         # optionally trim
