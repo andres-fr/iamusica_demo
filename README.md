@@ -8,7 +8,19 @@ The present repository hosts a highly configurable and extendable desktop graphi
 * Main components
 * Usage examples
 
-For the detections, a pre-trained deep learning model is used (provided [here](iamusica_demo/assets/OnsetVelocity_2_2022_09_08_01_27_40.139step=95000_f1=0.9640.torch)). See [this companion repository](https://github.com/andres-fr/iamusica_training) for details about training and evaluating the model.
+For the detections, a pre-trained deep learning model is used (provided [here](iamusica_demo/assets/OnsetsAndVelocities_2023_03_04_09_53_53.289step=43500_f1=0.9675__0.9480.torch)). See [the companion repository](https://github.com/andres-fr/iamusica_training) as well as our [paper](https://arxiv.org/abs/2303.04485) for details about training and evaluating the model, and consider citing our work if this demo is useful to you:
+
+```
+@misc{onsvel,
+title={{Onsets and Velocities}: Affordable Real-Time Piano Transcription Using Convolutional Neural Networks},
+author={Andres Fernandez},
+year={2023},
+eprint={2303.04485},
+archivePrefix={arXiv},
+primaryClass={cs.SD}
+}
+```
+
 
 > :warning:
 > Note that the detector has been trained on modern piano recordings, and its performance may suffer for different instruments and in contaminated/noisy environments.
@@ -22,16 +34,8 @@ For the detections, a pre-trained deep learning model is used (provided [here](i
 * [Joan Lluís Travé Pla](https://joantrave.net/en)
 * [Andrés Fernández Rodríguez](https://aferro.dynu.net)
 
-This is [Free/Libre and Open Source Software](https://www.gnu.org/philosophy/floss-and-foss.en.html), see the [LICENSE](LICENSE) for more details! Particularly, we welcome improvement suggestions, bug reports, and any other kind of feedback+contributions through the [issues](https://github.com/andres-fr/iamusica_demo/issues). If you use this work, please consider citing the paper:
-
-
-```
-@article{onsvel,
-    title   = "{Onsets and Velocities}: Affordable Real-Time Piano Transcription Using Convolutional Neural Networks"
-    author  = "Andres Fernandez",
-    year    = "2023",
-}
-```
+This is [Free/Libre and Open Source Software](https://www.gnu.org/philosophy/floss-and-foss.en.html), see the [LICENSE](LICENSE) for more details!
+Particularly, we welcome improvement suggestions, bug reports, and any other kind of feedback+contributions through the [issues](https://github.com/andres-fr/iamusica_demo/issues).
 
 
 
@@ -46,18 +50,18 @@ We use `PyTorch` for the backend and `PySide2` (a Python wrapper for `Qt 5.12+`)
 
 ```
 # create and activate conda venv
-conda create -n onsvel_demo python==3.9
-conda activate onsvel_demo
+conda create -n iamusica_demo python==3.9
+conda activate iamusica_demo
 
 # conda dependencies
-conda install pytorch==1.11.0 torchaudio==0.11.0 -c pytorch
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 -c pytorch
 conda install pyside2==5.13.2 -c conda-forge
 conda install pyaudio==0.2.11 -c anaconda
 conda install gstreamer==1.18.5 gst-plugins-base==1.18.5 gst-plugins-good==1.18.5 gst-plugins-good-pulseaudio==1.18.4 -c conda-forge -c dtk-forge
 conda install omegaconf==2.1.2 -c conda-forge
 conda install pandas==1.4.2 -c anaconda
 conda install h5py==3.6.0 -c anaconda
-conda install matplotlib==3.7.1 -c conda-forge
+conda install matplotlib==3.4.3 -c conda-forge
 conda install scipy==1.8.0 -c conda-forge
 
 # pip dependencies
@@ -167,6 +171,3 @@ If notes are selected when the grid is present, some alignment-related statistic
 
 The velocity analysis tool can be used to e.g. compare the velocity profies of different performances for the same fragment.
 The grid analysis can be used to e.g. quantify rubatos or assess time precision.
-
-
-![demo screenshot 2](assets/demo2.png)
