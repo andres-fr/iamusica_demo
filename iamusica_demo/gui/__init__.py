@@ -39,7 +39,8 @@ def resize_button(b, w_ratio=1.0, h_ratio=1.0,
     #
     left, right, top, bottom = padding_px_lrtb
     b.setStyleSheet(f"padding-left: {left}px;padding-right: {right}px;"
-                    f"padding-top: {top}px;padding-bottom: {bottom}px;");
+                    f"padding-top: {top}px;padding-bottom: {bottom}px;")
+
 
 def seconds_to_timestamp(secs, num_decimals=2):
     """
@@ -49,7 +50,7 @@ def seconds_to_timestamp(secs, num_decimals=2):
     """
     secs, fraction = divmod(secs, 1)
     secs_str = str(datetime.timedelta(seconds=int(secs)))
-    frac_str = ("{:." + str(num_decimals) +  "f}").format(
+    frac_str = ("{:." + str(num_decimals) + "f}").format(
         round(fraction, num_decimals))
     result = secs_str + frac_str[1:]
     return result

@@ -8,10 +8,7 @@ widgets, the ``MainWindow`` class.
 """
 
 
-import os
-#
-import numpy as np
-from PySide2 import QtCore, QtWidgets, QtGui
+from PySide2 import QtCore, QtWidgets
 #
 from .spectrogram import SpecRollView
 from .analysis_surface import AnalysisSurface
@@ -179,8 +176,7 @@ class IAMusicaMainWindow(QtWidgets.QMainWindow):
         self.analysis_pan = AnalysisPan(self, initial_pthresh, initial_ovif,
                                         initial_mel_offset, initial_mel_vshift)
 
-
-        # #
+        #
         # self.instructions_dialog = InstructionsDialog()
         # self.about_dialog = AboutDialog()
 
@@ -211,7 +207,7 @@ class IAMusicaMainWindow(QtWidgets.QMainWindow):
         edit_menu = self.menuBar().addMenu("Edit")
         self.create_action = edit_menu.addAction("Create session")
         self.open_action = edit_menu.addAction("Open session")
-        ### self.save_action = edit_menu.addAction("Save session")
+        # self.save_action = edit_menu.addAction("Save session")
         # help menu
         help_menu = self.menuBar().addMenu("Help")
         self.keyboard_shortcuts = help_menu.addAction("Keyboard shortcuts")

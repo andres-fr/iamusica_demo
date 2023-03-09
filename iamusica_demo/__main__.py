@@ -13,24 +13,23 @@ import sys
 from dataclasses import dataclass
 from typing import Optional, List
 #
-from omegaconf import OmegaConf, MISSING
+from omegaconf import OmegaConf
 # Dark theme: https://qdarkstylesheet.readthedocs.io/en/latest/readme.html
 import numpy as np
 import qdarkstyle
 from PySide2 import QtWidgets, QtGui, QtCore
 # app constants
-from . import ASSETS_PATH, OV_MODEL_PATH, WAV_SAMPLERATE, NUM_PIANO_KEYS
+from . import OV_MODEL_PATH, OV_MODEL_CONV1X1_HEAD, \
+    OV_MODEL_LRELU_SLOPE, WAV_SAMPLERATE, NUM_PIANO_KEYS
 from . import MEL_FRAME_SIZE, MEL_FRAME_HOP, NUM_MELS, MEL_FMIN, MEL_FMAX, \
     MEL_WINDOW
 # app backend
 from .utils import make_timestamp
-from .building_blocks import TorchWavToLogmelDemo
-from .dl_models import get_ov_demo_model
+from .models import TorchWavToLogmelDemo, get_ov_demo_model
 from .session import SessionHDF5, DemoSession
 # app frontend
 from .gui.main_window import IAMusicaMainWindow
 from .gui.core.dialogs import FlexibleDialog, ExceptionDialog, InfoDialog
-
 
 
 # ##############################################################################
@@ -85,7 +84,6 @@ class RecDialog(InfoDialog):
         super().__init__("RECORDING IN PROGRESS",
                          "Please finish recording first!",
                          timeout_ms=timeout_ms)
-
 
 
 class SavedInfoDialog(InfoDialog):
@@ -170,7 +168,7 @@ class IAMusicaApp(QtWidgets.QApplication):
         "Create session": QtGui.QKeySequence("Ctrl+N"),
         "Open session": QtGui.QKeySequence("Ctrl+O"),
         "Save session": QtGui.QKeySequence("Ctrl+S"),
-        ### "Quicksave text": QtGui.QKeySequence("Ctrl+Shift+S"),
+        # "Quicksave text": QtGui.QKeySequence("Ctrl+Shift+S"),
         #
         "Toggle play/pause": QtGui.QKeySequence("Ctrl+Space"),
         "Seek player back <<": QtGui.QKeySequence("Ctrl+Left"),
@@ -187,8 +185,10 @@ class IAMusicaApp(QtWidgets.QApplication):
                  # backend
                  wav_samplerate=16000,
                  mel_frame_size=2048,
-                 mel_frame_hop=384, num_mels=250, mel_fmin=50, mel_fmax=8000,
+                 mel_frame_hop=384, num_mels=229, mel_fmin=50, mel_fmax=8000,
                  mel_window=MEL_WINDOW, ov_model_path=OV_MODEL_PATH,
+                 ov_model_conv1x1_head=OV_MODEL_CONV1X1_HEAD,
+                 ov_model_lrelu_slope=OV_MODEL_LRELU_SLOPE,
                  num_piano_keys=NUM_PIANO_KEYS,
                  # demo
                  audio_recording_numhops=4, h5_chunk_numhops=60,
@@ -226,7 +226,8 @@ class IAMusicaApp(QtWidgets.QApplication):
             wav_samplerate, mel_frame_size, mel_frame_hop, num_mels,
             mel_fmin, mel_fmax, mel_window)
         self.ov_model = get_ov_demo_model(
-            ov_model_path, num_mels, num_piano_keys, self.TORCH_DEVICE)
+            ov_model_path, num_mels, num_piano_keys,
+            ov_model_conv1x1_head, ov_model_lrelu_slope, self.TORCH_DEVICE)
         #
         self.wav_samplerate = wav_samplerate
 
@@ -319,7 +320,8 @@ class IAMusicaApp(QtWidgets.QApplication):
           if a dir is a session, set to false to create a new session.
         :returns: The paths for the wav, mel and onset HDF5 files inside the
           givne directory.
-        :raises: Error if any of the files doesn't exist and ``err_if_missing``.
+        :raises: Error if any of the files doesn't exist and
+          ``err_if_missing`` is true.
         """
         ws_dir, sess_name = os.path.split(sess_dir)
         ws_dir = os.path.join(ws_dir, sess_name)
@@ -514,7 +516,8 @@ class IAMusicaApp(QtWidgets.QApplication):
             # compute velocity stats
             median_v = np.median(vvv)
             mean_v = np.mean(vvv)
-            stats = [("Mean intensity", mean_v), ("Median intensity", median_v)]
+            stats = [("Mean intensity", mean_v),
+                     ("Median intensity", median_v)]
             # if a vgrid was selected, add grid-error stats
             if vgrid is not None:
                 vgrid_arr = np.array((vgrid[0], *vgrid[1], *vgrid[2]))
@@ -527,15 +530,13 @@ class IAMusicaApp(QtWidgets.QApplication):
             #
             analface.update_stats(stats)
 
-
     @QtCore.Slot()
     def update_analysis_vgrid(self):
         """
         to be called whenever a vertical grid is set in the piano roll.
         It updates the stats report
         """
-        print(NotImplemented)
-
+        print("update analysis vgrid:", NotImplemented)
 
     @staticmethod
     def grid_matching(candidates, targets):
@@ -551,7 +552,6 @@ class IAMusicaApp(QtWidgets.QApplication):
             result.append(closest_diff)
         #
         return result
-
 
 
 # ##############################################################################
@@ -601,9 +601,11 @@ def run_iamusica_demo_app(initial_display_width=400,
                           dark_mode=True):
     """
     """
+
     app = IAMusicaApp("IAMUSICA DEMO", initial_display_width,
                       WAV_SAMPLERATE, MEL_FRAME_SIZE, MEL_FRAME_HOP, NUM_MELS,
                       MEL_FMIN, MEL_FMAX, MEL_WINDOW, OV_MODEL_PATH,
+                      OV_MODEL_CONV1X1_HEAD, OV_MODEL_LRELU_SLOPE,
                       NUM_PIANO_KEYS,
                       #
                       audio_recording_numhops,

@@ -63,7 +63,7 @@ class AudioPlayer(QtWidgets.QWidget):
         # first create player, then setup GUI, finally connect player to GUI
         self.media_player = QtMultimedia.QMediaPlayer(parent=self)
         self.media_player.setAudioRole(QtMultimedia.QAudio.MusicRole)
-        # audio probe provides "real-time" readings from the source (the player)
+        # audio probe provides "realtime" readings from the source (the player)
         self.probe = QtMultimedia.QAudioProbe(parent=self)
         self.probe.setSource(self.media_player)
         self.probe.audioBufferProbed.connect(self.on_audio_probe)
@@ -103,12 +103,15 @@ class AudioPlayer(QtWidgets.QWidget):
         # configure button sizes
         resize_button(self.play_b, padding_px_lrtb=self.MAIN_PADDING)
         resize_button(self.stop_b, padding_px_lrtb=self.MAIN_PADDING)
-        resize_button(self.bw_b, w_ratio=0.8, padding_px_lrtb=self.SLIM_PADDING)
-        resize_button(self.fw_b, w_ratio=0.8, padding_px_lrtb=self.SLIM_PADDING)
+        resize_button(self.bw_b, w_ratio=0.8,
+                      padding_px_lrtb=self.SLIM_PADDING)
+        resize_button(self.fw_b, w_ratio=0.8,
+                      padding_px_lrtb=self.SLIM_PADDING)
         # create volume slider
         self.vol_s = QtWidgets.QSlider(QtCore.Qt.Vertical)
         self.vol_s.setRange(0, 100)
-        max_play_h = max([sz.height() for sz in self.play_icon.availableSizes()])
+        max_play_h = max([sz.height() for sz in
+                          self.play_icon.availableSizes()])
         self.vol_s.setMaximumHeight(max_play_h)
         self.vol_s.valueChanged.connect(self.on_vol_change)
         # create position slider and label

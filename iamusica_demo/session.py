@@ -6,7 +6,6 @@
 """
 
 
-import os
 # from threading import Thread
 #
 import numpy as np
@@ -15,7 +14,7 @@ import torch
 import torch.nn.functional as F
 #
 from .audio_loop import AsynchAudioInputStream
-from .utils import make_timestamp, torch_load_resample_audio
+from .utils import torch_load_resample_audio
 
 
 # ##############################################################################
@@ -38,8 +37,8 @@ class SessionHDF5:
         :param compression: ``lzf`` is fast, ``gzip`` slower but provides
           better compression
         :param data_chunk_length: Every I/O operation goes by chunks. A too
-          small chunk size will cause many syscalls (slow), and with a too large
-          chunk size we will be loading too much information in a single
+          small chunk size will cause many syscalls (slow), and with a too
+          large chunk size we will be loading too much information in a single
           syscall (also slow, and bloats the RAM). Ideally, the chunk length is
           a bit larger than what is usually needed (e.g. if we expect to read
           between 10 and 50 rows at a time, we can choose chunk=60).
@@ -64,8 +63,9 @@ class SessionHDF5:
                 compression=compression, dtype=h5py.string_dtype(),
                 chunks=(metadata_chunk_length,))
             self.data_idxs_ds = self.h5f.create_dataset(
-                self.IDXS_NAME, shape=(2, 0), maxshape=(2, None), dtype=np.int64,
-                compression=compression, chunks=(2, metadata_chunk_length))
+                self.IDXS_NAME, shape=(2, 0), maxshape=(2, None),
+                dtype=np.int64, compression=compression,
+                chunks=(2, metadata_chunk_length))
         else:
             self.h5f = h5py.File(out_path, "r+")
             self.data_ds = self.h5f[self.DATA_NAME]
@@ -177,9 +177,9 @@ class DemoSession:
             passed to the model, and the sides are trimmed after inference.
           * mel gain: Float to be added to the mel spectrogram
           * mel vshift: Real-valued index designing the vertical shift to be
-            applied to the mel spectrogram. A vshfit of x means that ``spec[i]``
-            will be moved to ``spec[i+x]``. Empty margins will be filled with
-            the min value for that spectrogram.
+            applied to the mel spectrogram. A vshfit of x means that
+            ``spec[i]`` will be moved to ``spec[i+x]``. Empty margins will be
+            filled with the min value for that spectrogram.
         """
 
         # self.inf_thread = None  # ATM thread not used
@@ -204,22 +204,6 @@ class DemoSession:
         self.aais = AsynchAudioInputStream(
             samplerate=wav_samplerate, chunk_length=self.in_chunk_length,
             update_callback=self.wav_update_callback)
-        # # create HDF5 databases to store live computations
-        # h5w_chunk_len = logmel_fn.hopsize * h5w_chunk_numhops
-        # self.h5w = IncrementalHDF5(h5wav_path, height=1, dtype=self.NP_DTYPE,
-        #                            data_chunk_length=h5w_chunk_len,
-        #                            metadata_chunk_length=h5w_chunk_len,
-        #                            err_if_exists=True)
-        # self.h5m = IncrementalHDF5(h5mel_path, height=num_mels,
-        #                            dtype=self.NP_DTYPE,
-        #                            data_chunk_length=h5mel_chunk_numframes,
-        #                            metadata_chunk_length=h5mel_chunk_numframes,
-        #                            err_if_exists=True)
-        # self.h5o = IncrementalHDF5(h5onset_path, height=num_piano_keys,
-        #                            dtype=self.NP_DTYPE,
-        #                            data_chunk_length=h5mel_chunk_numframes,
-        #                            metadata_chunk_length=h5mel_chunk_numframes,
-        #                            err_if_exists=True)
 
     def get_inference_params(self):
         """
@@ -274,7 +258,8 @@ class DemoSession:
         self.h5o.append(roll_arr, metadata_str="")
         # figure out fill_mel value
         if fill_mel == "min":
-            fill_mel = self.logmel_fn(torch.zeros(self.logmel_fn.winsize)).min()
+            fill_mel = self.logmel_fn(
+                torch.zeros(self.logmel_fn.winsize)).min()
         #
         mel_arr = np.full((self.h5m.height, num_frames),
                           fill_value=fill_mel, dtype=self.NP_DTYPE)
@@ -348,13 +333,16 @@ class DemoSession:
                     mel_vshift=0, trim_out_l=0, trim_out_r=0):
         """
         :param wav: Torch tensor of shape ``(L,)`` to be fed to ``logmel_fn``.
-        :param trim_out_l: Nonnegative. Given output of shape ``(k, t)``, remove
-          the first l indexes. Also remove corresponding entries in dataframe.
-        :param trim_out_r: Nonnegative. Given output of shape ``(k, t)``, remove
-          the last r indexes. Also remove corresponding entries in dataframe.
+        :param trim_out_l: Nonnegative. Given output of shape ``(k, t)``,
+          remove the first l indexes. Also remove corresponding entries in
+          dataframe.
+        :param trim_out_r: Nonnegative. Given output of shape ``(k, t)``,
+          remove the last r indexes. Also remove corresponding entries in
+          dataframe.
         :returns: ``(trimmed_logmel, trimmed_roll, trimmed_df)``.
        """
-        print("\n\n PREDICTING WITH:", pthresh, (mel_offset, mel_vshift), (trim_out_l, trim_out_r), wav.shape)
+        print("\n\n PREDICTING WITH:", pthresh, (mel_offset, mel_vshift),
+              (trim_out_l, trim_out_r), wav.shape)
         logmel = logmel_fn(wav, mel_offset, mel_vshift)
         ov_roll, df = ov_model(logmel, pthresh)
         # optionally trim
