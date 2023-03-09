@@ -13,6 +13,7 @@ from torchaudio.transforms import MelSpectrogram, AmplitudeToDB
 from .ov import OnsetsAndVelocities
 from .decoder import OnsetVelocityNmsDecoder
 
+
 # ##############################################################################
 # # LOGMEL
 # ##############################################################################
@@ -106,7 +107,7 @@ def get_ov_demo_model(model_path, num_mels=229, num_keys=88,
     decoder = OnsetVelocityNmsDecoder(
         num_keys, nms_pool_ksize=3, gauss_conv_stddev=1,
         gauss_conv_ksize=11, vel_pad_left=1, vel_pad_right=1)
-    #
+
     def model_inf(x, pthresh=0.75):
         """
         """

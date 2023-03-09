@@ -180,13 +180,11 @@ class SpectrogramView(QtWidgets.QGraphicsView):
 # #############################################################################
 class RollView(MouseEventManager, SpectrogramView):
     """
-    RollView has all functionality from spectrogram, plus analysis functionality
-    via interaction with the mouse.
+    RollView has all functionality from spectrogram, plus analysis
+    functionality via interaction with the mouse.
     """
     selRectSignal = QtCore.Signal()
     velGridSignal = QtCore.Signal()
-
-
 
     SELRECT_ZVAL = 2  # 0 is the default. Larger Z goes on top of smaller
     VGRID_ZVAL = 1
@@ -244,7 +242,7 @@ class RollView(MouseEventManager, SpectrogramView):
             self.delete_vgrid()
         self_vgrid = [None, [], []]  # scaffold for self.vgrid
         # get scene boundaries
-        min_y, max_y = 0, self.scene().height()
+        # min_y, max_y = 0, self.scene().height()
         min_x, max_x = 0, self.scene().width()
         # create+add central line
         vline = self.create_vline(
@@ -408,8 +406,6 @@ class RollView(MouseEventManager, SpectrogramView):
             self.selRectSignal.emit()
 
 
-
-
 # #############################################################################
 # ## MULTI-SPECTROGRAM
 # #############################################################################
@@ -527,7 +523,6 @@ class SpecRollView(QtWidgets.QSplitter):
             self.mscontrols.spec_cmap_cbox, initial_spec_cmap)
         self.mscontrols.set_cbox_cmap(
             self.mscontrols.roll_cmap_cbox, initial_roll_cmap)
-
 
     def refresh_all(self, xpos=None):
         """

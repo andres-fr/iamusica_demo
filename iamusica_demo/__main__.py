@@ -13,13 +13,13 @@ import sys
 from dataclasses import dataclass
 from typing import Optional, List
 #
-from omegaconf import OmegaConf, MISSING
+from omegaconf import OmegaConf
 # Dark theme: https://qdarkstylesheet.readthedocs.io/en/latest/readme.html
 import numpy as np
 import qdarkstyle
 from PySide2 import QtWidgets, QtGui, QtCore
 # app constants
-from . import ASSETS_PATH, OV_MODEL_PATH, OV_MODEL_CONV1X1_HEAD, \
+from . import OV_MODEL_PATH, OV_MODEL_CONV1X1_HEAD, \
     OV_MODEL_LRELU_SLOPE, WAV_SAMPLERATE, NUM_PIANO_KEYS
 from . import MEL_FRAME_SIZE, MEL_FRAME_HOP, NUM_MELS, MEL_FMIN, MEL_FMAX, \
     MEL_WINDOW
@@ -30,7 +30,6 @@ from .session import SessionHDF5, DemoSession
 # app frontend
 from .gui.main_window import IAMusicaMainWindow
 from .gui.core.dialogs import FlexibleDialog, ExceptionDialog, InfoDialog
-
 
 
 # ##############################################################################
@@ -85,7 +84,6 @@ class RecDialog(InfoDialog):
         super().__init__("RECORDING IN PROGRESS",
                          "Please finish recording first!",
                          timeout_ms=timeout_ms)
-
 
 
 class SavedInfoDialog(InfoDialog):
@@ -170,7 +168,7 @@ class IAMusicaApp(QtWidgets.QApplication):
         "Create session": QtGui.QKeySequence("Ctrl+N"),
         "Open session": QtGui.QKeySequence("Ctrl+O"),
         "Save session": QtGui.QKeySequence("Ctrl+S"),
-        ### "Quicksave text": QtGui.QKeySequence("Ctrl+Shift+S"),
+        # "Quicksave text": QtGui.QKeySequence("Ctrl+Shift+S"),
         #
         "Toggle play/pause": QtGui.QKeySequence("Ctrl+Space"),
         "Seek player back <<": QtGui.QKeySequence("Ctrl+Left"),
@@ -322,7 +320,8 @@ class IAMusicaApp(QtWidgets.QApplication):
           if a dir is a session, set to false to create a new session.
         :returns: The paths for the wav, mel and onset HDF5 files inside the
           givne directory.
-        :raises: Error if any of the files doesn't exist and ``err_if_missing``.
+        :raises: Error if any of the files doesn't exist and
+          ``err_if_missing`` is true.
         """
         ws_dir, sess_name = os.path.split(sess_dir)
         ws_dir = os.path.join(ws_dir, sess_name)
@@ -517,7 +516,8 @@ class IAMusicaApp(QtWidgets.QApplication):
             # compute velocity stats
             median_v = np.median(vvv)
             mean_v = np.mean(vvv)
-            stats = [("Mean intensity", mean_v), ("Median intensity", median_v)]
+            stats = [("Mean intensity", mean_v),
+                     ("Median intensity", median_v)]
             # if a vgrid was selected, add grid-error stats
             if vgrid is not None:
                 vgrid_arr = np.array((vgrid[0], *vgrid[1], *vgrid[2]))
@@ -530,15 +530,13 @@ class IAMusicaApp(QtWidgets.QApplication):
             #
             analface.update_stats(stats)
 
-
     @QtCore.Slot()
     def update_analysis_vgrid(self):
         """
         to be called whenever a vertical grid is set in the piano roll.
         It updates the stats report
         """
-        print(NotImplemented)
-
+        print("update analysis vgrid:", NotImplemented)
 
     @staticmethod
     def grid_matching(candidates, targets):
@@ -554,7 +552,6 @@ class IAMusicaApp(QtWidgets.QApplication):
             result.append(closest_diff)
         #
         return result
-
 
 
 # ##############################################################################

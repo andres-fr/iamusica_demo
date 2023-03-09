@@ -6,22 +6,13 @@
 """
 
 
-import numpy as np
-from PySide2 import QtCore, QtWidgets, QtGui
+from PySide2 import QtWidgets
 #
 import matplotlib.pyplot as plt
-from matplotlib.colors import Normalize as NormalizeColors
 #
-from ..mouse_event_manager import MouseEventManager
-from .core.widgets import NamedForm, IntSpinBox, StrComboBox
-
-
-
-
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg \
+    import FigureCanvasQTAgg as FigureCanvas
 # from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
-
 
 
 # #############################################################################
@@ -44,7 +35,7 @@ class MatplotlibFigure(FigureCanvas):
         """
         try:
             super().resizeEvent(evt)
-        except ValueError as ve:
+        except ValueError:
             # ignore ValueError when collapsing tab
             pass
 

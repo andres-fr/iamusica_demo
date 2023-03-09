@@ -36,9 +36,7 @@ class AsynchAudioInputStream:
         self.sr = samplerate
         self.chunk = chunk_length
         # setup recording stream
-
         self.pa = pyaudio.PyAudio()
-
 
         for i in range(self.pa.get_device_count()):
             devinfo = self.pa.get_device_info_by_index(i)
@@ -55,7 +53,7 @@ class AsynchAudioInputStream:
                                                start=False)
                     print("\n\nsupported:", devinfo)
                     break
-                except (ValueError, OSError) as e:
+                except (ValueError, OSError):  # as e:
                     # print("\n\nAudio device issues!", type(e), e)
                     pass
         #

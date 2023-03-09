@@ -42,6 +42,7 @@ def torch_load_resample_audio(path, target_sr=16000, mono=True,
     wave = resampler(wave.to(device))
     return wave
 
+
 def torch_save_wav(t, outpath, samplerate,
                    encoding="PCM_S", bits_per_sample=16):
     """
