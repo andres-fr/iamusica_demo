@@ -11,13 +11,11 @@ The present repository hosts a highly configurable and extendable desktop graphi
 For the detections, a pre-trained deep learning model is used (provided [here](iamusica_demo/assets/OnsetsAndVelocities_2023_03_04_09_53_53.289step=43500_f1=0.9675__0.9480.torch)). See [the companion repository](https://github.com/andres-fr/iamusica_training) as well as our [paper](https://arxiv.org/abs/2303.04485) for details about training and evaluating the model, and consider citing our work if this demo is useful to you:
 
 ```
-@misc{onsvel,
-title={{Onsets and Velocities}: Affordable Real-Time Piano Transcription Using Convolutional Neural Networks},
-author={Andres Fernandez},
-year={2023},
-eprint={2303.04485},
-archivePrefix={arXiv},
-primaryClass={cs.SD}
+@inproceedings{onsvel,
+      title={{Onsets and Velocities}: Affordable Real-Time Piano Transcription Using Convolutional Neural Networks},
+      author={Andres Fernandez},
+      year={2023},
+      booktitle={{EUSIPCO} Proceedings},
 }
 ```
 
