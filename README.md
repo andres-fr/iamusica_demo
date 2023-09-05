@@ -71,6 +71,12 @@ pip install coloredlogs==15.0.1
 See the full [requirements](assets/requirements.txt) for a comprehensive list.
 
 
+**Note:** after less than a year, some dependencies have already managed to become heavily inconsistent with each other. While a more consistent installation process doesn't come, here are things that can be tried out:
+* Skip the `pyside2` line until the very end of the conda installs, and run it with the `--no-deps` flag, i.e. `conda install --no-deps pyside2==5.13.2 -c conda-forge`
+* Install `matplotlib` via pip.
+* If `omegaconf` gives you trouble, try to add `pip install antlr4-python3-runtime==4.8`
+* If you have issues playing audio check [this post](https://stackoverflow.com/a/67465089)
+  * Also: `sudo apt-get install libqt5multimedia5-plugins` may help
 
 
 
